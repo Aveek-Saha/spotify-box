@@ -1,18 +1,55 @@
 require('dotenv').config()
 const SpotifyWebApi = require('spotify-web-api-node');
+const { Octokit } = require("@octokit/rest");
+const wrapAnsi = require("wrap-ansi");
 
 const {
     CLIENT_ID: client_id,
     CLIENT_SECRET: client_secret,
     REFRESH_TOKEN: refresh_token,
-    OPTION: option
+    OPTION: option,
+    GIST_ID: gistId,
+    GH_TOKEN: githubToken,
 } = process.env;
+
+const octokit = new Octokit({
+    auth: `token ${githubToken}`
+});
 
 var spotifyApi = new SpotifyWebApi({
     clientId: client_id,
     clientSecret: client_secret,
     refreshToken: refresh_token
 });
+
+function truncate(str, n){
+    return (str.length > n) ? str.substr(0, n-1) + '…' : str;
+};
+
+async function updateGist(lines, des) {
+    let gist;
+    try {
+      gist = await octokit.gists.get({ gist_id: gistId });
+    } catch (error) {
+      console.error(`Unable to get gist\n${error}`);
+    }
+
+    const filename = Object.keys(gist.data.files)[0];
+  
+    try {
+      await octokit.gists.update({
+        gist_id: gistId,
+        description: `🎵 Spotify | ${des}`,
+        files: {
+          [filename]: {
+              content: lines
+          }
+        }
+      });
+    } catch (error) {
+      console.error(`Unable to update gist\n${error}`);
+    }
+  }
 
 
 async function getTopTracks() {
@@ -21,8 +58,15 @@ async function getTopTracks() {
         var tracks = topTracks.body.items.map((track) => ({
             artist: track.artists.map((_artist) => _artist.name)[0],
             title: track.name
-          }));
-          return tracks;
+        }));
+
+        var lines = [];
+
+        tracks.forEach(track => {
+            lines.push(` ▶ ${truncate(track.title + " ", 35).padEnd(35, '.')} 💽 ${truncate(track.artist + " ", 20)}`)
+        })
+
+        return lines.join("\n");
     } catch (error) {
         console.log('Something went wrong!', error);
     }
@@ -47,9 +91,18 @@ async function getRecentlyPlayed() {
         var recentlyPlayed = await spotifyApi.getMyRecentlyPlayedTracks({ limit: 5 })
         var tracks = recentlyPlayed.body.items.map((play) => ({
             artist: play.track.artists.map((_artist) => _artist.name)[0],
-            title: play.track.name
-          }));
-          return tracks ;
+            title: play.track.name,
+            album: play.track.album.name
+        }));
+
+        var lines = [];
+
+        tracks.forEach(track => {
+            lines.push(` ▶ ${truncate(track.title + " ", 35).padEnd(35, '.')} 💽 ${truncate(track.artist + " ", 20)}`)
+        })
+
+        return lines.join("\n");
+        
     } catch (error) {
         console.log('Something went wrong!', error);
     }
@@ -61,14 +114,19 @@ async function main() {
         spotifyApi.setAccessToken(accessToken.body['access_token']);
 
         var res;
-        if(option === 'recently-played')
+        var des;
+        if(option === 'recently-played') {
             res = await getRecentlyPlayed()
-        else if (option === 'top-tracks')
+            des = "Recently Played"
+        } else if (option === 'top-tracks') {
             res = await getTopTracks()
-        else
+            des = "My Top Tracks"
+        } else {
             res = await getTopArtists()
-
+            des = "My Top Artists"
+        }
         console.log(res);
+        await updateGist(res, des)
     } catch (error) {
         console.log('Something went wrong!', error);
     }

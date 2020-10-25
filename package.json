@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/Aveek-Saha/spotify-box#readme",
   "dependencies": {
+    "@octokit/rest": "^18.0.6",
     "dotenv": "^8.2.0",
-    "spotify-web-api-node": "^5.0.0"
+    "spotify-web-api-node": "^5.0.0",
+    "wrap-ansi": "^7.0.0"
   }
 }
