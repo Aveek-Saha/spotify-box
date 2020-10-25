@@ -7,5 +7,5 @@ runs:
   image: ./index.js
 
 branding:
-  icon: file-text
+  icon: headphones
   color: green

@@ -1,10 +1,21 @@
 name: Update gist with latest post
 on:
   workflow_dispatch:
-  # schedule:
-  #   - cron: "0 0 * * *"
+  schedule:
+    - cron: "0 0 * * *"
 jobs:
-  update-gist:
+  spotify-box:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: npm install
+      - name: Update
+        uses: ./
+        env:
+          GIST_ID: ${{ secrets.GIST_ID }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+          TYPE: ${{ secrets.TYPE }}
+          TIME_RANGE: ${{ secrets.TIME_RANGE }}

@@ -6,7 +6,7 @@ const {
     CLIENT_ID: client_id,
     CLIENT_SECRET: client_secret,
     REFRESH_TOKEN: refresh_token,
-    OPTION: option,
+    TYPE: type,
     GIST_ID: gistId,
     GH_TOKEN: githubToken,
     TIME_RANGE: time_range
@@ -39,7 +39,7 @@ async function updateGist(lines, des) {
     try {
       await octokit.gists.update({
         gist_id: gistId,
-        description: `🎵 Spotify | ${des}`,
+        description: `🎧 Spotify | ${des}`,
         files: {
           [filename]: {
               content: lines
@@ -62,7 +62,7 @@ async function getTopTracks() {
 
         var lines = [];
         tracks.forEach(track => {
-            lines.push(` ▶ ${truncate(track.title + " ", 35).padEnd(35, '.')} 💽 ${truncate(track.artist + " ", 16)}`)
+            lines.push(` ▶ ${truncate(track.title + " ", 35).padEnd(35, '.')} 🎵 ${truncate(track.artist + " ", 16)}`)
         })
         return lines.join("\n");
     } catch (error) {
@@ -100,7 +100,7 @@ async function getRecentlyPlayed() {
         var lines = [];
 
         tracks.forEach(track => {
-            lines.push(` ▶ ${truncate(track.title + " ", 35).padEnd(35, '.')} 💽 ${truncate(track.artist + " ", 16)}`)
+            lines.push(` ▶ ${truncate(track.title + " ", 35).padEnd(35, '.')} 🎵 ${truncate(track.artist + " ", 16)}`)
         })
 
         return lines.join("\n");
@@ -117,10 +117,10 @@ async function main() {
 
         var res;
         var des;
-        if(option === 'recently-played') {
+        if(type === 'recently-played') {
             res = await getRecentlyPlayed()
             des = "Recently Played"
-        } else if (option === 'top-tracks') {
+        } else if (type === 'top-tracks') {
             res = await getTopTracks()
             des = "My Top Tracks"
         } else {
