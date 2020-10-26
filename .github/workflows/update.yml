@@ -1,4 +1,4 @@
-name: Update gist with latest post
+name: Update gist with latest songs
 on:
   workflow_dispatch:
   schedule:
