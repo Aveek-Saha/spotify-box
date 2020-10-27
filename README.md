@@ -28,9 +28,8 @@
 1. Use this website to generate a base 64 string of the form `client_id:client_secret`. (https://www.base64encode.org/)
 1. In a terminal, run the following command and use the base 64 encoded string and code from the previous steps.
 
-    ```bash
-    curl -H "Authorization: Basic <base 64 str>" -d grant_type=authorization_code -d code=<code> \
-    -d redirect_uri=http://localhost:5000/ https://accounts.spotify.com/api/token 
+    ```command
+    curl -H "Authorization: Basic <base 64 str>" -d grant_type=authorization_code -d code=<code> -d redirect_uri=http://localhost:5000/ https://accounts.spotify.com/api/token 
     ```
 1. A JSON response containing a `refresh_token` will be returned. Copy this value.
 
