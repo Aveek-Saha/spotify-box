@@ -117,10 +117,10 @@ async function main() {
 
         var res;
         var des;
-        if(type === 'recently-played') {
+        if(type === 'recently_played') {
             res = await getRecentlyPlayed()
             des = "Recently Played"
-        } else if (type === 'top-tracks') {
+        } else if (type === 'top_tracks') {
             res = await getTopTracks()
             des = "My Top Tracks"
         } else {
