@@ -1,7 +1,7 @@
 <p align="center">
   <img width="450" src="https://user-images.githubusercontent.com/31800695/95853311-d40d3400-0d72-11eb-86f5-460d4214001c.png">
   <h3 align="center">spotify-box</h3>
-  <p align="center">🎧 Update a pinned gist to show your top spotify tracks/artists</p>
+  <p align="center">🎧 Update a pinned gist to show your top Spotify tracks/artists</p>
 </p>
 
 ---
@@ -23,7 +23,11 @@
 1. Create an app with a name and description.
 1. Copy the `Client ID` and `Client secret`.
 1. Click on edit settings and add `http://localhost:5000` as a redirect URI.
-1. In your browser enter this URL and replace `<client_id>` in this url: `https://accounts.spotify.com/authorize?client_id=<client_id>&response_type=code&redirect_uri=http://localhost:5000/&scope=user-top-read`.
+1. In your browser enter this URL and replace <client_id> in this url: 
+    ```
+    https://accounts.spotify.com/authorize?client_id=<client_id>
+    &response_type=code&redirect_uri=http://localhost:5000/&scope=user-top-read
+    ```
 1. After this you should see an url like this in your address bar: `http://localhost:5000?code=<code>`. Copy this code query parameter.
 1. Use this website to generate a base 64 string of the form `client_id:client_secret`. (https://www.base64encode.org/)
 1. In a terminal, run the following command and use the base 64 encoded string and code from the previous steps.
