@@ -26,7 +26,8 @@
 1. In your browser enter this URL and replace <client_id> in this url: 
     ```
     https://accounts.spotify.com/authorize?client_id=<client_id>
-    &response_type=code&redirect_uri=http://localhost:5000/&scope=user-top-read%20user-read-recently-played
+    &response_type=code
+    &redirect_uri=http://localhost:5000/&scope=user-top-read%20user-read-recently-played
     ```
 1. After this you should see an url like this in your address bar: `http://localhost:5000/?code=<code>`. Copy this code query parameter.
 1. Use this website to generate a base 64 string of the form `client_id:client_secret`. (https://www.base64encode.org/)
